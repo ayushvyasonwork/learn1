@@ -1,5 +1,5 @@
-from rest_framework import generics
-from .serializers import RegisterSerializer
+from rest_framework import generics,permissions
+from .serializers import RegisterSerializer,UserSerializer
 from django.contrib.auth import get_user_model
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
@@ -27,3 +27,9 @@ class DebugAuthView(APIView):
             "user": str(request.user),
             "is_org_admin": getattr(request.user, 'is_org_admin', False)
         })
+
+
+class UserListView(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [permissions.IsAuthenticated]  
