@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'accounts',
     'groups',
-    'roles'
+    'roles',
+     'corsheaders',
 ]
 AUTH_USER_MODEL = 'accounts.User'
 MIDDLEWARE = [
@@ -50,14 +51,21 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'roles.middleware.LoggingMiddleware',
+        'corsheaders.middleware.CorsMiddleware',  # <- Add this at the top
+    'django.middleware.common.CommonMiddleware'
 ]
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173"
+]
+CORS_ALLOW_CREDENTIALS = True
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
 }
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=120),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
 }
 ROOT_URLCONF = 'backend.urls'

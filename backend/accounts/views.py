@@ -16,3 +16,14 @@ class ProtectedView(APIView):
 
     def get(self, request):
         return Response({"message": "You are authenticated", "user": request.user.email})
+
+class DebugAuthView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        print("Authenticated user:", request.user)
+        print("Is org admin:", getattr(request.user, 'is_org_admin', 'N/A'))
+        return Response({
+            "user": str(request.user),
+            "is_org_admin": getattr(request.user, 'is_org_admin', False)
+        })
